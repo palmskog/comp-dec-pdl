@@ -94,7 +94,7 @@ Section FinSets.
 
   Canonical Structure fset_subType := [subType for elements by fset_type_rect].
   Canonical Structure fset_eqType := EqType _ [eqMixin of fset_type by <:].
-  Canonical Structure fset_predType := mkPredType (fun (X : fset_type) x => nosimpl x \in elements X).
+  Canonical Structure fset_predType := PredType (fun (X : fset_type) x => nosimpl x \in elements X).
   Canonical Structure fset_choiceType := Eval hnf in ChoiceType _ [choiceMixin of fset_type by <:].
 End FinSets.
 
@@ -411,8 +411,8 @@ Section OperationsTheory.
   Lemma fimset2P (rT : choiceType) f (y : rT) : 
     reflect (fimset2_spec f y) (y \in fimset2 f A B).
   Proof.
-    rewrite fimset2E set_ofE. apply: (iffP (allpairsP _ _ _ _)).
-    case => [[a b] /= [? ? ?]]. exact: fImset_spec.
+    rewrite fimset2E set_ofE. apply: (iffP allpairsP).
+      case => [[a b] /= [? ? ?]]. exact: fImset_spec.
     case => a b *. exists (a,b). by split.
   Qed.
 
@@ -1044,7 +1044,8 @@ Section FsetConnect.
     rewrite /connect_in.
     move => /existsP [a] /existsP [b] /and3P [/eqP ? /eqP ? ?] /existsP [?] /existsP [c] /and3P [/eqP H /eqP ? R].
     subst. apply/existsP; exists a. apply/existsP; exists c. rewrite !eqxx /=.
-    apply: connect_trans _ R. by rewrite (val_inj _ _ H).
+    apply: connect_trans _ R.
+    by move/val_inj: H =>->.
   Qed.
 
   Lemma connect_inP x y :

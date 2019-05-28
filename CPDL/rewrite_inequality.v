@@ -40,7 +40,10 @@ Proof. move => n m /leP ? n' m' /leP ?. apply/leP. exact: leq_add. Qed.
 Instance: Proper (le ++> le --> le) subn.
 Proof. move => n m /leP ? n' m' /leP ?. apply/leP. exact: leq_sub. Qed.
 
-Instance: RewriteRelation le.
+Program Instance: RewriteRelation le := _.
+Next Obligation.
+by [].
+Qed.
 
 (** Wrapper Lemma to trigger setoid rewrite *)
 Definition leqRW m n  : m <= n -> le m n := leP.

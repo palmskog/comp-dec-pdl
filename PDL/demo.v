@@ -39,7 +39,7 @@ Record demo := Demo {
 
 Arguments demoD1 [d C] _ [p s] _.
 
-Canonical demo_predType := mkPredType (fun (S : demo) (C : clause) => nosimpl C \in cls S).
+Canonical demo_predType := PredType (fun (S : demo) (C : clause) => nosimpl C \in cls S).
 
 Lemma LCF (S : demo) C : C \in S -> ((fF^+ \in C) = false) * (forall p, (fV p^+ \in C) && (fV p^- \in C) = false).
 Proof.
@@ -54,7 +54,7 @@ Section ModelExistience.
   Variables (S : demo).
 
   Definition Mtype := seq_sub S.
-  Definition Mtrans a : rel Mtype := restrict S (rtrans a).
+  Definition Mtrans a : rel Mtype := @restrict _ S (rtrans a).
   Definition Mlabel (x: var) (C : Mtype) := fV x^+ \in val C.
 
   Definition model_of := FModel Mtrans Mlabel.
